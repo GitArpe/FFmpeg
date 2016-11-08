@@ -232,6 +232,8 @@ typedef struct InputFilter {
     struct FilterGraph *graph;
     uint8_t            *name;
 
+    AVFifoBuffer *frame_queue;
+
     // parameters configured for this input
     int format;
 
@@ -319,14 +321,6 @@ typedef struct InputStream {
     int guess_layout_max;
 
     int autorotate;
-    int resample_height;
-    int resample_width;
-    int resample_pix_fmt;
-
-    int      resample_sample_fmt;
-    int      resample_sample_rate;
-    int      resample_channels;
-    uint64_t resample_channel_layout;
 
     int fix_sub_duration;
     struct { /* previous decoded subtitle and related variables */
@@ -627,7 +621,6 @@ int init_simple_filtergraph(InputStream *ist, OutputStream *ost);
 int init_complex_filtergraph(FilterGraph *fg);
 
 int ifilter_parameters_from_frame(InputFilter *ifilter, const AVFrame *frame);
-int ifilter_parameters_from_decoder(InputFilter *ifilter, const AVCodecContext *avctx);
 
 int ffmpeg_parse_options(int argc, char **argv);
 
